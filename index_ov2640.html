@@ -798,6 +798,97 @@ document.addEventListener('DOMContentLoaded', function (event) {
       disable(enrollButton)
     }
   }
+
+  function roverSendCommand(command) {
+    if (roverSending) {
+      console.log(`command ${command} ignored: rover busy.`);
+    } else if (roverDirection === command) {
+      console.log(`command ${command} ignored: rover already is ${command}.`);
+    } else {
+      console.log(`sending ${command}`);
+      roverSending = command;
+      let url = ((command === "stop") 
+          ? `${baseHost}/rover?direction=${command}&speed=0`
+          : `${baseHost}/rover?direction=${command}&speed=255`);
+      fetch(url).then((response) => {
+        if (200 == response.status) {
+          console.log(`${command} fulfilled`);
+          roverDirection = command;
+        } else {
+          console.log(`${command} rejected: ${response.statusText}`);
+        }
+      }, (reason) => {
+        console.log(`${command} failed: ${reason}`);
+      }).catch((reason) => {
+        console.log(`${command} exception: ${reason}`);
+      }).finally((info) => {
+        console.log(`done sending command ${command}`);
+        roverSending = null
+      })
+    }
+  }
+
+  var roverSending = false;
+  var roverDirection = "stop";
+  document.body.onkeydown = handleRoverKeyDown;
+  function handleRoverKeyDown(e) {
+    e = e || window.event;
+
+    if (e.keyCode == '38') {
+      // up arrow
+      if ((roverDirection === "stop") || (roverDirection === "forward")) {
+        roverSendCommand("forward")
+      } else {
+        roverSendCommand("stop")
+      }
+    }
+    else if (e.keyCode == '40') {
+      // down arrow
+      if ((roverDirection === "stop") || (roverDirection === "reverse")) {
+        roverSendCommand("reverse")
+      } else {
+        roverSendCommand("stop")
+      }
+    }
+    else if (e.keyCode == '37') {
+      // left arrow
+      if ((roverDirection === "stop") || (roverDirection === "left")) {
+        roverSendCommand("left")
+      } else {
+        roverSendCommand("stop")
+      }
+    }
+    else if (e.keyCode == '39') {
+      // right arrow
+      if ((roverDirection === "stop") || (roverDirection === "right")) {
+        roverSendCommand("right")
+      } else {
+        roverSendCommand("stop")
+      }
+    }
+  }
+
+  document.body.onkeyup = handleRoverKeyUp
+  function handleRoverKeyUp(e) {
+    e = e || window.event;
+
+    if (e.keyCode == '38') {
+      // up arrow
+      roverSendCommand("stop")
+    }
+    else if (e.keyCode == '40') {
+      // down arrow
+      roverSendCommand("stop")
+    }
+    else if (e.keyCode == '37') {
+      // left arrow
+      roverSendCommand("stop")
+    }
+    else if (e.keyCode == '39') {
+      // right arrow
+      roverSendCommand("stop")
+    }
+  }
 })
 
         </script>

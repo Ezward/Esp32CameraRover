@@ -3,7 +3,7 @@
 /******************************************************/
 /****************rover control ************************/
 /******************************************************/
-byte speed = 255;
+byte speed = 128;
 
 int AIA_PIN = -1;
 int AIB_PIN = -1;
@@ -40,30 +40,30 @@ void roverForward(){
 
   analogWrite(AIA_PIN, speed);
   analogWrite(AIB_PIN, 0);
-  analogWrite(BIA_PIN, speed);
-  analogWrite(BIB_PIN, 0);
+  analogWrite(BIA_PIN, 0);
+  analogWrite(BIB_PIN, speed);
 }
 void roverReverse(){
   if (-1 == AIA_PIN) return;
 
   analogWrite(AIA_PIN, 0);
   analogWrite(AIB_PIN, speed);
-  analogWrite(BIA_PIN, 0);
-  analogWrite(BIB_PIN, speed);
+  analogWrite(BIA_PIN, speed);
+  analogWrite(BIB_PIN, 0);
 }
 void roverTurnRight() {
   if (-1 == AIA_PIN) return;
 
   analogWrite(AIA_PIN, speed);
   analogWrite(AIB_PIN, 0);
-  analogWrite(BIA_PIN, 0);
-  analogWrite(BIB_PIN, speed);
+  analogWrite(BIA_PIN, speed);
+  analogWrite(BIB_PIN, 0);
 }
 void roverTurnLeft() {
   if (-1 == AIA_PIN) return;
 
   analogWrite(AIA_PIN, 0);
   analogWrite(AIB_PIN, speed);
-  analogWrite(BIA_PIN, speed);
-  analogWrite(BIB_PIN, 0);
+  analogWrite(BIA_PIN, 0);
+  analogWrite(BIB_PIN, speed);
 }
