@@ -18,6 +18,12 @@ void roverInit(int a1, int a2, int b1, int b2) {
   AIB_PIN = a2;
   BIA_PIN = b1;
   BIB_PIN = b2;
+
+  pinMode(AIA_PIN, OUTPUT);
+  pinMode(AIB_PIN, OUTPUT);
+  pinMode(BIA_PIN, OUTPUT);
+  pinMode(BIB_PIN, OUTPUT);
+  
 }
 
 void roverSetSpeed(byte inSpeed) {
@@ -30,40 +36,40 @@ byte roverGetSpeed() {
 void roverStop() {
   if (-1 == AIA_PIN) return;
   
-  analogWrite(AIA_PIN, 0);
-  analogWrite(AIB_PIN, 0);
-  analogWrite(BIA_PIN, 0);
-  analogWrite(BIB_PIN, 0);
+  digitalWrite(AIA_PIN, LOW);
+  digitalWrite(AIB_PIN, LOW);
+  digitalWrite(BIA_PIN, LOW);
+  digitalWrite(BIB_PIN, LOW);
 }
 void roverForward(){
   if (-1 == AIA_PIN) return;
 
-  analogWrite(AIA_PIN, speed);
-  analogWrite(AIB_PIN, 0);
-  analogWrite(BIA_PIN, 0);
-  analogWrite(BIB_PIN, speed);
+  digitalWrite(AIA_PIN, HIGH);
+  digitalWrite(AIB_PIN, LOW);
+  digitalWrite(BIA_PIN, LOW);
+  digitalWrite(BIB_PIN, HIGH);
 }
 void roverReverse(){
   if (-1 == AIA_PIN) return;
 
-  analogWrite(AIA_PIN, 0);
-  analogWrite(AIB_PIN, speed);
-  analogWrite(BIA_PIN, speed);
-  analogWrite(BIB_PIN, 0);
+  digitalWrite(AIA_PIN, LOW);
+  digitalWrite(AIB_PIN, HIGH);
+  digitalWrite(BIA_PIN, HIGH);
+  digitalWrite(BIB_PIN, LOW);
 }
 void roverTurnRight() {
   if (-1 == AIA_PIN) return;
 
-  analogWrite(AIA_PIN, speed);
-  analogWrite(AIB_PIN, 0);
-  analogWrite(BIA_PIN, speed);
-  analogWrite(BIB_PIN, 0);
+  digitalWrite(AIA_PIN, HIGH);
+  digitalWrite(AIB_PIN, LOW);
+  digitalWrite(BIA_PIN, HIGH);
+  digitalWrite(BIB_PIN, LOW);
 }
 void roverTurnLeft() {
   if (-1 == AIA_PIN) return;
 
-  analogWrite(AIA_PIN, 0);
-  analogWrite(AIB_PIN, speed);
-  analogWrite(BIA_PIN, 0);
-  analogWrite(BIB_PIN, speed);
+  digitalWrite(AIA_PIN, LOW);
+  digitalWrite(AIB_PIN, HIGH);
+  digitalWrite(BIA_PIN, LOW);
+  digitalWrite(BIB_PIN, HIGH);
 }
