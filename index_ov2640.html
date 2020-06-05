@@ -798,13 +798,39 @@ document.addEventListener('DOMContentLoaded', function (event) {
       disable(enrollButton)
     }
   }
+  
+  
+  //
+  // append a command to the command queue
+  //
+  var commands = [];
+  function roverPostCommand(command) {
+	  if ((0 === commands.length) || (command !== commands[commands.length - 1])) {
+	  	commands.push(command);  // add to end of command buffer
+	  } else {
+	      console.log(`command ${command} not pushed: ${command} is already buffered.`);
+	  }
+	  roverSendCommand();	// send next command in command queue
+  }
+  
 
-  function roverSendCommand(command) {
-    if (roverSending) {
-      console.log(`command ${command} ignored: rover busy.`);
-    } else if (roverDirection === command) {
+  // 
+  // send the next command in the command queue
+  //
+  function roverSendCommand() {
+	  if (0 === commands.length) {
+		  return;	// nothing to do
+	  }
+	  if (roverSending) {
+		  return;	// already busy, leave command buffered
+	  }
+	  let command = commands[0];
+    if (roverDirection === command) {
+		commands.shift();	// remove the redundant command
       console.log(`command ${command} ignored: rover already is ${command}.`);
-    } else {
+	  return;
+    } 
+
       console.log(`sending ${command}`);
       roverSending = command;
       let url = ((command === "stop") 
@@ -813,6 +839,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
       fetch(url).then((response) => {
         if (200 == response.status) {
           console.log(`${command} fulfilled`);
+		  console.assert("The executed command should be at the start of the buffer.", command === commands.shift());	// remove the command from the buffer
           roverDirection = command;
         } else {
           console.log(`${command} rejected: ${response.statusText}`);
@@ -825,7 +852,6 @@ document.addEventListener('DOMContentLoaded', function (event) {
         console.log(`done sending command ${command}`);
         roverSending = null
       })
-    }
   }
 
   var roverSending = false;
@@ -837,33 +863,33 @@ document.addEventListener('DOMContentLoaded', function (event) {
     if (e.keyCode == '38') {
       // up arrow
       if ((roverDirection === "stop") || (roverDirection === "forward")) {
-        roverSendCommand("forward")
+        roverPostCommand("forward")
       } else {
-        roverSendCommand("stop")
+        roverPostCommand("stop")
       }
     }
     else if (e.keyCode == '40') {
       // down arrow
       if ((roverDirection === "stop") || (roverDirection === "reverse")) {
-        roverSendCommand("reverse")
+        roverPostCommand("reverse")
       } else {
-        roverSendCommand("stop")
+        roverPostCommand("stop")
       }
     }
     else if (e.keyCode == '37') {
       // left arrow
       if ((roverDirection === "stop") || (roverDirection === "left")) {
-        roverSendCommand("left")
+        roverPostCommand("left")
       } else {
-        roverSendCommand("stop")
+        roverPostCommand("stop")
       }
     }
     else if (e.keyCode == '39') {
       // right arrow
       if ((roverDirection === "stop") || (roverDirection === "right")) {
-        roverSendCommand("right")
+        roverPostCommand("right")
       } else {
-        roverSendCommand("stop")
+        roverPostCommand("stop")
       }
     }
   }
@@ -874,21 +900,27 @@ document.addEventListener('DOMContentLoaded', function (event) {
 
     if (e.keyCode == '38') {
       // up arrow
-      roverSendCommand("stop")
+      roverPostCommand("stop")
     }
     else if (e.keyCode == '40') {
       // down arrow
-      roverSendCommand("stop")
+      roverPostCommand("stop")
     }
     else if (e.keyCode == '37') {
       // left arrow
-      roverSendCommand("stop")
+      roverPostCommand("stop")
     }
     else if (e.keyCode == '39') {
       // right arrow
-      roverSendCommand("stop")
+      roverPostCommand("stop")
     }
   }
+  
+  function roverLoop(timestamp) {
+	  roverSendCommand();
+	  window.requestAnimationFrame(roverLoop);
+  }
+  window.requestAnimationFrame(roverLoop);
 })
 
         </script>
