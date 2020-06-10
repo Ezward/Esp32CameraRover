@@ -1,4 +1,5 @@
 #include <analogWrite.h>  // shim for analogWrite() on ESP32
+#include "rover.h"
 
 /******************************************************/
 /****************rover control ************************/
@@ -24,6 +25,54 @@ void roverInit(int a1, int a2, int b1, int b2) {
   pinMode(BIA_PIN, OUTPUT);
   pinMode(BIB_PIN, OUTPUT);
   
+}
+
+int roverCommand(
+  char *directionParam, // IN : direction as a string; "forward", 
+                        //      "reverse", "left", "right", or "stop"
+  char *speedParam)     // IN : speed as an integer string, "0".."255"
+                        //      where "0" is stop,  "255" is full speed
+                        // RET: 0 for SUCCESS, non-zero for error code
+{
+    int speed = roverGetSpeed();
+    char *direction = "";
+
+    //
+    // validate speed param
+    //
+    if(NULL != speedParam && strlen(speedParam) > 0) {
+      int speedValue = atoi(speedParam);
+      if ((speedValue >= 0) && (speedValue <= 255)) {
+        speed = speedValue;
+      } else {
+          return FAILURE;
+       }
+    }
+
+    //
+    // validate direction param
+    //
+    if (NULL != directionParam && strlen(directionParam) > 0) {
+      if (0 == strcmp(directionParam, "stop")) {
+        roverStop();
+      } else if (0 == strcmp(directionParam, "forward")) {
+        roverSetSpeed(speed);
+        roverForward();
+      } else if (0 == strcmp(directionParam, "reverse")) {
+        roverSetSpeed(speed);
+        roverReverse();
+      } else if (0 == strcmp(directionParam, "left")) {
+        roverSetSpeed(speed);
+        roverTurnLeft();
+      } else if (0 == strcmp(directionParam, "right")) {
+        roverSetSpeed(speed);
+        roverTurnRight();
+      } else {
+          return FAILURE;
+      }
+    }
+
+    return SUCCESS;
 }
 
 void roverSetSpeed(byte inSpeed) {

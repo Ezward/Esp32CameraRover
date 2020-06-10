@@ -1,6 +1,10 @@
 #ifndef ROVER_H
 #define ROVER_H
 
+#define SUCCESS (0)
+#define FAILURE (-1)
+
+extern int roverCommand(char *directionParam, char *speedParam);
 extern void roverInit(int a1, int a2, int b1, int b2);
 extern void roverSetSpeed(byte inSpeed);
 extern byte roverGetSpeed();

@@ -633,45 +633,9 @@ static esp_err_t rover_handler(httpd_req_t *req){
         free(buf);
     }
 
-    int speed = roverGetSpeed();
-    char *direction = "";
-
-    //
-    // validate speed param
-    //
-    if(strlen(speedParam) > 0) {
-      int speedValue = atoi(speedParam);
-      if ((speedValue >= 0) && (speedValue <= 255)) {
-        speed = speedValue;
-      } else {
-          // httpd_resp_send_err(req, HTTPD_400_BAD_REQUEST, NULL);
+    if(roverCommand(directionParam, speedParam) != SUCCESS) {
           httpd_resp_send_500(req);
-          return ESP_FAIL;
-       }
-    }
-
-    //
-    // validate direction param
-    //
-    if (strlen(directionParam) > 0) {
-      if (0 == strcmp(directionParam, "stop")) {
-        roverStop();
-      } else if (0 == strcmp(directionParam, "forward")) {
-        roverSetSpeed(speed);
-        roverForward();
-      } else if (0 == strcmp(directionParam, "reverse")) {
-        roverSetSpeed(speed);
-        roverReverse();
-      } else if (0 == strcmp(directionParam, "left")) {
-        roverSetSpeed(speed);
-        roverTurnLeft();
-      } else if (0 == strcmp(directionParam, "right")) {
-        roverSetSpeed(speed);
-        roverTurnRight();
-      } else {
-          httpd_resp_send_500(req);
-          return ESP_FAIL;
-      }
+          return ESP_FAIL;      
     }
 
     httpd_resp_set_hdr(req, "Access-Control-Allow-Origin", "*");
