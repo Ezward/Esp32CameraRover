@@ -20,7 +20,7 @@ These are somewhat ordered, but priorities can change.  The overall goals are  i
 - [ ] Implement websocket protocol and serve images over websocket (may just be part of improving performance, but down the road we want to also use it so send commands to rover).
 - [ ] Implement websocket protocol to send commands from browser to rover (rather than HTTP GET api; this forces ordering of commands).
 - [ ] Implement authentication so only one person can be driving, but any number of people can be viewing.
-- [ ] Implement optocouplers for measuring speed and distance travelled.
+- [ ] Implement optocouplers for measuring speed and distance travelled.  Add precision commands, 180 degree turn (turn around), turn 90 degrees right, turn 90 degrees left. 
 - [ ] Implement command/time/distance recorder and associated UI so we can record and playback a path that has been driven.
 - [ ] Implement PWM control for motor speed (and modify UI to support this).
 - [ ] Implement PID algorithm to precisely control speed of motors (and so allow for any turning radius).
