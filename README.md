@@ -1,16 +1,16 @@
 # Esp32CameraRover
 
-This sketch uses an ESP32 CAM (AI Thinker model), a L9110S dc motor controller and a commonly available Robot Car chassis to create a First-Person-View (FPV) robot that can be driven from any web browser.
+This sketch uses an ESP32 Cam, an L9110S dc motor controller and a commonly available Robot Car chassis to create a First-Person-View (FPV) robot that can be driven from any web browser.
 
 
 ## Status
-- This first iteration does not yet incorporate the optocouplers.  It uses the use the canonical Esp32CameraServer example sketch as the basis for the Esp32CameraRover sketch and adds the rover functionality to it.  However, the results are dissapointing.  The problem is that the webserver is 'polled'; it takes over the ESP32 when handling a single request.  It seems to take several seconds to handle a single request.  This causes real problems trying to drive the rover.  Even worse, it seems that rover commands cannot be handled while video is streaming, which is sort of the whole point of this project.  The good news is that there are other more capable web server libraries for the ESP32 which could solve these problems.  I've tried to keep the rover code de-coupled from the rest of the sketch, which has turned out to be a very good thing.  The next iteration fo this project will use a better web server library and a different way to stream the video.
+- This first iteration does not yet incorporate the optocouplers.  It uses the canonical Esp32CameraWebServer example sketch its basis and adds the rover functionality to it.  However, the results are disappointing.  The problem is that the webserver is 'polled'; it takes over the ESP32 when handling a single request.  It seems to take several seconds to handle a single request.  This causes real problems trying to drive the rover.  Even worse, it seems that rover commands cannot be handled while video is streaming, which is sort of the whole point of this project.  The good news is that there are other more capable web server libraries for the ESP32 which could solve these problems.  I've tried to keep the rover code de-coupled from the rest of the sketch, which has turned out to be a very good thing.  The next iteration for this project will use a better web server library and a different way to stream the video.
 
 
 ## Parts
 The parts are readily available from many suppliers.  I will provide links to Amazon (fast delivery) and AliExpress (low prices), but there are other suppliers that you may prefer.  Think of these links as a description of what you can get and about how much it will cost, rather than a suggestion for any particular supplier.  You may also choose to buy two at a time as this will also save money if you want spare parts or a second robot.  Also, it is sometimes easier to test code on parts rather than a fully assembled robot, so a second set of parts can be handy that way.
 
-####AI Thinker ESP32 Cam
+#### ESP32 Cam
 This is a ESP32-S with an OV2640 camera.
 - [Amazon](https://www.amazon.com/SongHe-ESP32-CAM-Development-Bluetooth-Arduino/dp/B07RB2J4XL/ref=sr_1_7)
 - [AliExpress]()
