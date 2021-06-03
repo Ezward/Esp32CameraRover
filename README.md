@@ -2,6 +2,8 @@
 
 This sketch uses an ESP32 Cam, an L9110S dc motor controller and a commonly available Robot Car chassis to create a First-Person-View (FPV) robot that can be driven from any web browser.
 
+This project is no longer maintained.  See the actively updated project https://github.com/Ezward/Esp32CameraRover2
+
 
 ## Status
 - This first iteration does not yet incorporate the optocouplers.  It uses the canonical Esp32CameraWebServer example sketch its basis and adds the rover functionality to it.  However, the results are disappointing.  The problem is that the webserver is 'polled'; it takes over the ESP32 when handling a single request.  It seems to take several seconds to handle a single request.  This causes real problems trying to drive the rover.  Even worse, it seems that rover commands cannot be handled while video is streaming, which is sort of the whole point of this project.  The good news is that there are other more capable web server libraries for the ESP32 which could solve these problems.  I've tried to keep the rover code de-coupled from the rest of the sketch, which has turned out to be a very good thing.  The next iteration for this project will use a better web server library and a different way to stream the video.
