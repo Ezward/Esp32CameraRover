@@ -1,5 +1,7 @@
 # Esp32CameraRover
 
+THIS REPO IS ARCHIVED.  SEE [Esp32CameraRover2](https://github.com/Ezward/Esp32CameraRover2) for and update and active repo.
+
 This sketch uses an ESP32 Cam, an L9110S dc motor controller and a commonly available Robot Car chassis to create a First-Person-View (FPV) robot that can be driven from any web browser.
 
 This project is no longer maintained.  See the actively updated project https://github.com/Ezward/Esp32CameraRover2
